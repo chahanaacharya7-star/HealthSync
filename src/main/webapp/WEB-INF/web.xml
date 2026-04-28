@@ -89,6 +89,16 @@
         <servlet-name>DoctorServlet</servlet-name>
         <url-pattern>/doctors/*</url-pattern>
     </servlet-mapping>
+    <!-- Appointment Servlet -->
+    <servlet>
+        <servlet-name>AppointmentServlet</servlet-name>
+        <servlet-class>com.healthsync.controller.AppointmentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AppointmentServlet</servlet-name>
+        <url-pattern>/appointments/*</url-pattern>
+    </servlet-mapping>
+
 
 
 </web-app>
