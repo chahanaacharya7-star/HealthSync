@@ -99,6 +99,18 @@
         <url-pattern>/appointments/*</url-pattern>
     </servlet-mapping>
 
+    <!-- Patient Dashboard Servlet -->
+    <servlet>
+        <servlet-name>PatientDashboardServlet</servlet-name>
+        <servlet-class>com.healthsync.controller.PatientDashboardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PatientDashboardServlet</servlet-name>
+        <url-pattern>/patient/dashboard</url-pattern>
+        <url-pattern>/patient/my-appointments</url-pattern>
+        <url-pattern>/patient/book-appointment</url-pattern>
+    </servlet-mapping>
+
 
 
 </web-app>

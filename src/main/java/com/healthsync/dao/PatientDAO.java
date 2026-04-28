@@ -137,4 +137,36 @@ public class PatientDAO {
         }
         return false;
     }
+    public Patient findByUserId(int userId) {
+        String sql = "SELECT p.*, u.full_name, u.email, u.phone, u.status " +
+                "FROM patients p JOIN users u ON p.user_id = u.user_id " +
+                "WHERE p.user_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Patient p = new Patient();
+                p.setPatientId(rs.getInt("patient_id"));
+                p.setUserId(rs.getInt("user_id"));
+                p.setDateOfBirth(rs.getString("date_of_birth"));
+                p.setGender(rs.getString("gender"));
+                p.setAddress(rs.getString("address"));
+                p.setBloodGroup(rs.getString("blood_group"));
+                p.setEmergencyContact(rs.getString("emergency_contact"));
+                p.setFullName(rs.getString("full_name"));
+                p.setEmail(rs.getString("email"));
+                p.setPhone(rs.getString("phone"));
+                p.setStatus(rs.getString("status"));
+                return p;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("PatientDAO findByUserId error: " + e.getMessage());
+        }
+        return null;
+    }
 }
