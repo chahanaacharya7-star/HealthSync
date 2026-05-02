@@ -42,13 +42,13 @@
                 <a href="<%= path %>/admin/dashboard">Dashboard</a>
             </li>
             <li>
-                <a href="<%= path %>/admin/patients">Patients</a>
+                <a href="<%= path %>/admin/manage-patients">Patients</a>
             </li>
             <li>
-                <a href="<%= path %>/admin/doctors">Doctors</a>
+                <a href="<%= path %>/admin/manage-doctors">Doctors</a>
             </li>
             <li>
-                <a href="<%= path %>/admin/appointments">Appointments</a>
+                <a href="<%= path %>/admin/manage-appointments">Appointments</a>
             </li>
             <li class="nav-user">👤 <%= currentUser %></li>
             <li>
