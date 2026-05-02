@@ -72,9 +72,9 @@ CREATE TABLE IF NOT EXISTS contact_messages (
 INSERT INTO users (full_name, email, phone, password, role, status)
 VALUES (
     'Admin',
-    'admin@healthsync.com',
+    'admin@email.com',
     '9825342534',
-    SHA2('1231', 256),
+    SHA2('1234', 256),
     'admin',
     'approved'
 );
