@@ -1,6 +1,4 @@
-/* ===========================
-   RESET & BASE
-=========================== */
+
 * {
     margin: 0;
     padding: 0;
@@ -119,9 +117,6 @@ a {
     border-radius: 3px;
 }
 
-/* ===========================
-   HERO SECTION
-=========================== */
 .hero {
     display: flex;
     align-items: center;
@@ -174,9 +169,6 @@ a {
     filter: drop-shadow(0 10px 30px rgba(26,115,232,0.3));
 }
 
-/* ===========================
-   BUTTONS
-=========================== */
 .btn {
     display: inline-block;
     padding: 12px 28px;
@@ -239,9 +231,6 @@ a {
     margin-top: 10px;
 }
 
-/* ===========================
-   FEATURES SECTION
-=========================== */
 .features {
     background-color: white;
     padding: 70px 40px;
@@ -295,9 +284,7 @@ a {
     color: #666;
 }
 
-/* ===========================
-   HOW IT WORKS
-=========================== */
+
 .how-it-works {
     padding: 70px 40px;
     text-align: center;
@@ -358,9 +345,7 @@ a {
     font-weight: 700;
 }
 
-/* ===========================
-   AUTH PAGES
-=========================== */
+
 .auth-container {
     display: flex;
     justify-content: center;
@@ -424,9 +409,6 @@ a {
     text-decoration: underline;
 }
 
-/* ===========================
-   FORM STYLES
-=========================== */
 .form-section {
     margin-bottom: 25px;
     padding: 20px;
@@ -489,9 +471,6 @@ a {
     flex: 1;
 }
 
-/* ===========================
-   ALERTS
-=========================== */
 .alert {
     padding: 13px 16px;
     border-radius: 8px;
@@ -518,9 +497,6 @@ a {
     border-left: 4px solid #1a73e8;
 }
 
-/* ===========================
-   ERROR PAGE
-=========================== */
 .error-container {
     display: flex;
     justify-content: center;
@@ -578,9 +554,6 @@ a {
     flex-wrap: wrap;
 }
 
-/* ===========================
-   DASHBOARD
-=========================== */
 .dashboard-container {
     padding: 35px 40px;
     max-width: 1300px;
@@ -629,9 +602,6 @@ a {
     font-size: 14px;
 }
 
-/* ===========================
-   TABLE
-=========================== */
 .table-container {
     background: white;
     border-radius: 12px;
@@ -685,7 +655,6 @@ table tr:hover {
     background-color: #f8faff;
 }
 
-/* Status Badges */
 .badge {
     display: inline-block;
     padding: 4px 12px;
@@ -714,9 +683,6 @@ table tr:hover {
     color: #1565c0;
 }
 
-/* ===========================
-   FOOTER
-=========================== */
 .footer {
     background-color: #1a1a2e;
     color: #ccc;
@@ -777,9 +743,6 @@ table tr:hover {
     color: #777;
 }
 
-/* ===========================
-   RESPONSIVE
-=========================== */
 @media (max-width: 768px) {
     .navbar {
         padding: 15px 20px;
