@@ -157,16 +157,76 @@ public class UserDAO {
         return counts;
     }
     public boolean update(User user) {
-        String sql = "UPDATE users SET full_name = ?, email = ?, phone = ? WHERE user_id = ?";
+        String sql = "UPDATE users SET full_name = ?, email = ?, phone = ?, role = ?, status = ?, password = ? WHERE user_id = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, user.getFullName());
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getPhone());
-            ps.setInt(4, user.getUserId());
+            ps.setString(4, user.getRole());
+            ps.setString(5, user.getStatus());
+            ps.setString(6, user.getPassword());
+            ps.setInt(7, user.getUserId());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.out.println("UserDAO update error: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public List<User> findAll() {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                user.setUserId(rs.getInt("user_id"));
+                user.setFullName(rs.getString("full_name"));
+                user.setEmail(rs.getString("email"));
+                user.setPhone(rs.getString("phone"));
+                user.setRole(rs.getString("role"));
+                user.setStatus(rs.getString("status"));
+                user.setCreatedAt(rs.getTimestamp("created_at").toString());
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            System.out.println("UserDAO findAll error: " + e.getMessage());
+        }
+        return users;
+    }
+
+    public User findById(int id) {
+        String sql = "SELECT * FROM users WHERE user_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                User user = new User();
+                user.setUserId(rs.getInt("user_id"));
+                user.setFullName(rs.getString("full_name"));
+                user.setEmail(rs.getString("email"));
+                user.setPhone(rs.getString("phone"));
+                user.setRole(rs.getString("role"));
+                user.setStatus(rs.getString("status"));
+                return user;
+            }
+        } catch (SQLException e) {
+            System.out.println("UserDAO findById error: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public boolean delete(int id) {
+        String sql = "DELETE FROM users WHERE user_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("UserDAO delete error: " + e.getMessage());
             return false;
         }
     }

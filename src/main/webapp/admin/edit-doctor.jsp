@@ -16,58 +16,59 @@
         <div class="auth-box auth-box-wide">
             <div class="auth-header">
                 <h2>Edit Doctor Profile</h2>
-                <p>Modify details for #${d.doctorId}</p>
+                <p>Update information for ${doctor.fullName}</p>
             </div>
 
-            <form action="${pageContext.request.contextPath}/admin/update-doctor" method="POST">
-                <input type="hidden" name="doctorId" value="${d.doctorId}">
-                <input type="hidden" name="userId" value="${d.userId}">
-
+            <form action="${pageContext.request.contextPath}/admin/manage-doctors" method="POST">
+                <input type="hidden" name="action" value="update">
+                <input type="hidden" name="doctorId" value="${doctor.doctorId}">
+                <input type="hidden" name="userId" value="${doctor.userId}">
+                
                 <div class="form-section">
-                    <div class="form-section-title">Professional Information</div>
+                    <h3 class="form-section-title">Personal Information</h3>
                     <div class="form-group">
-                        <label for="fullName">Full Name</label>
-                        <input type="text" name="fullName" value="${d.fullName}" required>
+                        <label>Full Name <span class="required">*</span></label>
+                        <input type="text" name="fullName" value="${doctor.fullName}" required>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" name="email" value="${d.email}" required>
+                            <label>Email Address <span class="required">*</span></label>
+                            <input type="email" name="email" value="${doctor.email}" required>
                         </div>
                         <div class="form-group">
-                            <label for="phone">Phone</label>
-                            <input type="text" name="phone" value="${d.phone}" required>
+                            <label>Phone Number <span class="required">*</span></label>
+                            <input type="tel" name="phone" value="${doctor.phone}" required>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-section">
-                    <div class="form-section-title">Specialization & Experience</div>
+                    <h3 class="form-section-title">Professional Details</h3>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="specialization">Specialization</label>
-                            <input type="text" name="specialization" value="${d.specialization}" required>
+                            <label>Specialization <span class="required">*</span></label>
+                            <input type="text" name="specialization" value="${doctor.specialization}" required>
                         </div>
                         <div class="form-group">
-                            <label for="qualification">Qualification</label>
-                            <input type="text" name="qualification" value="${d.qualification}" required>
+                            <label>Qualification <span class="required">*</span></label>
+                            <input type="text" name="qualification" value="${doctor.qualification}" required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="experience">Years of Experience</label>
-                            <input type="number" name="experience" value="${d.experienceYears}" required>
+                            <label>Experience (Years) <span class="required">*</span></label>
+                            <input type="number" name="experienceYears" value="${doctor.experienceYears}" required min="0">
                         </div>
                         <div class="form-group">
-                            <label for="availableDays">Available Days</label>
-                            <input type="text" name="availableDays" value="${d.availableDays}" placeholder="e.g. Mon, Wed, Fri">
+                            <label>Available Days <span class="required">*</span></label>
+                            <input type="text" name="availableDays" value="${doctor.availableDays}" required>
                         </div>
                     </div>
                 </div>
 
                 <div style="display: flex; gap: 15px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 2;">Update Doctor Profile</button>
                     <a href="${pageContext.request.contextPath}/admin/manage-doctors" class="btn btn-outline" style="flex: 1;">Cancel</a>
-                    <button type="submit" class="btn btn-primary" style="flex: 1;">Update Doctor</button>
                 </div>
             </form>
         </div>

@@ -50,6 +50,9 @@
             <li>
                 <a href="<%= path %>/admin/manage-appointments">Appointments</a>
             </li>
+            <li>
+                <a href="<%= path %>/admin/manage-users">Users</a>
+            </li>
             <li class="nav-user">👤 <%= currentUser %></li>
             <li>
                 <a href="<%= path %>/logout" class="nav-btn nav-btn-danger">

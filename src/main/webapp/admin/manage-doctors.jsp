@@ -18,7 +18,7 @@
                 <h1 class="dashboard-title">Manage Doctors</h1>
                 <p class="dashboard-subtitle">View and manage all healthcare providers.</p>
             </div>
-            <a href="${pageContext.request.contextPath}/admin/add-doctor.jsp" class="btn btn-primary">Add New Doctor</a>
+            <a href="${pageContext.request.contextPath}/admin/manage-doctors?action=add" class="btn btn-primary">Add New Doctor</a>
         </div>
 
         <div class="table-container">
@@ -47,8 +47,9 @@
                             </td>
                             <td>
                                 <div style="display: flex; gap: 8px;">
-                                    <a href="${pageContext.request.contextPath}/admin/edit-doctor?id=${d.doctorId}" class="btn btn-outline btn-sm">Edit</a>
-                                    <button onclick="deleteDoctor(${d.doctorId})" class="btn btn-danger btn-sm">Delete</button>
+                                    <a href="${pageContext.request.contextPath}/admin/manage-doctors?action=edit&id=${d.doctorId}" class="btn btn-outline btn-sm">Edit</a>
+                                    <a href="${pageContext.request.contextPath}/admin/manage-doctors?action=delete&id=${d.doctorId}" 
+                                       onclick="return confirm('Are you sure?')" class="btn btn-danger btn-sm">Delete</a>
                                 </div>
                             </td>
                         </tr>
@@ -59,19 +60,6 @@
     </main>
 
     <jsp:include page="/includes/footer.jsp" />
-
-    <script>
-        function deleteDoctor(id) {
-            if (confirm('Are you sure you want to delete this doctor? This action cannot be undone.')) {
-                fetch('${pageContext.request.contextPath}/doctors/' + id, {
-                    method: 'DELETE'
-                }).then(res => {
-                    if (res.ok) location.reload();
-                    else alert('Delete failed');
-                });
-            }
-        }
-    </script>
 
 </body>
 </html>

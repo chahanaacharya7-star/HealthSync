@@ -121,14 +121,31 @@
         <servlet-name>AdminDashboardServlet</servlet-name>
         <url-pattern>/admin/dashboard</url-pattern>
         <url-pattern>/admin/manage-patients</url-pattern>
-        <url-pattern>/admin/manage-doctors</url-pattern>
         <url-pattern>/admin/manage-appointments</url-pattern>
         <url-pattern>/admin/approve-user</url-pattern>
         <url-pattern>/admin/edit-patient</url-pattern>
-        <url-pattern>/admin/edit-doctor</url-pattern>
         <url-pattern>/admin/update-patient</url-pattern>
-        <url-pattern>/admin/update-doctor</url-pattern>
     </servlet-mapping>
 
+    <!-- Manage Doctor Servlet -->
+    <servlet>
+        <servlet-name>ManageDoctorServlet</servlet-name>
+        <servlet-class>com.healthsync.controller.ManageDoctorServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ManageDoctorServlet</servlet-name>
+        <url-pattern>/admin/manage-doctors</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- Manage User Servlet -->
+    <servlet>
+        <servlet-name>ManageUserServlet</servlet-name>
+        <servlet-class>com.healthsync.controller.ManageUserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ManageUserServlet</servlet-name>
+        <url-pattern>/admin/manage-users</url-pattern>
+    </servlet-mapping>
 
 </web-app>
