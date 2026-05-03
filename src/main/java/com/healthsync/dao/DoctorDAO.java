@@ -133,4 +133,36 @@ public class DoctorDAO {
         }
         return false;
     }
+
+    public Doctor findByUserId(int userId) {
+        String sql = "SELECT d.*, u.full_name, u.email, u.phone, u.status " +
+                "FROM doctors d JOIN users u ON d.user_id = u.user_id " +
+                "WHERE d.user_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Doctor d = new Doctor();
+                d.setDoctorId(rs.getInt("doctor_id"));
+                d.setUserId(rs.getInt("user_id"));
+                d.setSpecialization(rs.getString("specialization"));
+                d.setQualification(rs.getString("qualification"));
+                d.setExperienceYears(rs.getInt("experience_years"));
+                d.setAvailableDays(rs.getString("available_days"));
+                d.setFullName(rs.getString("full_name"));
+                d.setEmail(rs.getString("email"));
+                d.setPhone(rs.getString("phone"));
+                d.setStatus(rs.getString("status"));
+                return d;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("DoctorDAO findByUserId error: " + e.getMessage());
+        }
+        return null;
+    }
 }
