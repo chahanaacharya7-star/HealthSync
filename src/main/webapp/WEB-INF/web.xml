@@ -111,6 +111,49 @@
         <url-pattern>/patient/book-appointment</url-pattern>
     </servlet-mapping>
 
+    <!-- User Settings Servlet -->
+    <servlet>
+        <servlet-name>UserSettingsServlet</servlet-name>
+        <servlet-class>com.healthsync.controller.UserSettingsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserSettingsServlet</servlet-name>
+        <url-pattern>/patient/profile</url-pattern>
+        <url-pattern>/doctor/profile</url-pattern>
+    </servlet-mapping>
+
+    <!-- Patient Medical Records Servlet -->
+    <servlet>
+        <servlet-name>PatientMedicalRecordsServlet</servlet-name>
+        <servlet-class>com.healthsync.controller.PatientMedicalRecordsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PatientMedicalRecordsServlet</servlet-name>
+        <url-pattern>/patient/medical-records</url-pattern>
+    </servlet-mapping>
+
+    <!-- Doctor Dashboard Servlet -->
+    <servlet>
+        <servlet-name>DoctorDashboardServlet</servlet-name>
+        <servlet-class>com.healthsync.controller.DoctorDashboardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DoctorDashboardServlet</servlet-name>
+        <url-pattern>/doctor/dashboard</url-pattern>
+        <url-pattern>/doctor/appointments</url-pattern>
+        <url-pattern>/doctor/patients</url-pattern>
+    </servlet-mapping>
+
+    <!-- Doctor Patient Records Servlet -->
+    <servlet>
+        <servlet-name>PatientRecordsServlet</servlet-name>
+        <servlet-class>com.healthsync.controller.PatientRecordsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PatientRecordsServlet</servlet-name>
+        <url-pattern>/doctor/patient-records</url-pattern>
+    </servlet-mapping>
+
 
     <!-- Admin Dashboard Servlet -->
     <servlet>
