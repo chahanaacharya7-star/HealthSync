@@ -10,14 +10,12 @@ public class MedicalRecord {
     private String followUpDate;
     private String createdAt;
 
-    // For display purposes
-    private String patientName;
+    // For display
     private String doctorName;
     private String doctorSpecialization;
 
     public MedicalRecord() {}
 
-    // Getters and Setters
     public int getRecordId() { return recordId; }
     public void setRecordId(int recordId) { this.recordId = recordId; }
 
@@ -31,23 +29,26 @@ public class MedicalRecord {
     public void setDiagnosis(String diagnosis) { this.diagnosis = diagnosis; }
 
     public String getPrescription() { return prescription; }
-    public void setPrescription(String prescription) { this.prescription = prescription; }
+    public void setPrescription(String prescription) {
+        this.prescription = prescription;
+    }
 
     public String getVisitDate() { return visitDate; }
     public void setVisitDate(String visitDate) { this.visitDate = visitDate; }
 
     public String getFollowUpDate() { return followUpDate; }
-    public void setFollowUpDate(String followUpDate) { this.followUpDate = followUpDate; }
+    public void setFollowUpDate(String followUpDate) {
+        this.followUpDate = followUpDate;
+    }
 
     public String getCreatedAt() { return createdAt; }
     public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
-
-    public String getPatientName() { return patientName; }
-    public void setPatientName(String patientName) { this.patientName = patientName; }
 
     public String getDoctorName() { return doctorName; }
     public void setDoctorName(String doctorName) { this.doctorName = doctorName; }
 
     public String getDoctorSpecialization() { return doctorSpecialization; }
-    public void setDoctorSpecialization(String doctorSpecialization) { this.doctorSpecialization = doctorSpecialization; }
+    public void setDoctorSpecialization(String s) {
+        this.doctorSpecialization = s;
+    }
 }

@@ -230,4 +230,20 @@ public class UserDAO {
             return false;
         }
     }
+
+    /** Update user password */
+    public boolean updatePassword(int userId, String hashedPassword) {
+        String sql = "UPDATE users SET password = ? WHERE user_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, hashedPassword);
+            ps.setInt(2, userId);
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.out.println("UserDAO.updatePassword() error: " + e.getMessage());
+            return false;
+        }
+    }
 }

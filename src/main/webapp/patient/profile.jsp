@@ -1,91 +1,173 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ page import="com.healthsync.model.Patient" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile | HealthSync</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>My Profile - HealthSync</title>
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
 
-    <jsp:include page="/includes/header.jsp" />
+<%@ include file="/includes/header.jsp" %>
 
-    <main class="dashboard-container">
-        <div class="dashboard-header">
-            <h1 class="dashboard-title">My Profile</h1>
-            <p class="dashboard-subtitle">Update your personal and medical details.</p>
-        </div>
+<div class="dashboard-container">
+    <h2 class="dashboard-title">My Profile</h2>
 
-        <c:if test="${param.success == 'true'}">
-            <div class="alert alert-success" style="padding: 15px; background: #d1fae5; color: #065f46; border-radius: 8px; margin-bottom: 20px;">
-                Profile updated successfully!
-            </div>
-        </c:if>
+    <% if (request.getAttribute("error") != null) { %>
+    <div class="alert alert-error">
+        ⚠ <%= request.getAttribute("error") %>
+    </div>
+    <% } %>
+    <% if (request.getAttribute("success") != null) { %>
+    <div class="alert alert-success">
+        ✔ <%= request.getAttribute("success") %>
+    </div>
+    <% } %>
 
-        <div class="form-container" style="max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-            <form action="${pageContext.request.contextPath}/patient/profile" method="POST">
-                <input type="hidden" name="action" value="updateProfile" />
-                
-                <h3 style="margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">Account Information</h3>
-                
+    <%
+        Patient patient = (Patient) request.getAttribute("patient");
+    %>
+
+    <div class="profile-grid">
+
+        <!-- Update Profile Form -->
+        <div class="form-card">
+            <h3 class="form-section-title">Personal Information</h3>
+            <form action="${pageContext.request.contextPath}/patient/profile"
+                  method="post">
+                <input type="hidden" name="action" value="updateProfile">
+
                 <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" name="fullName" value="${patient.fullName}" class="form-control" required />
-                </div>
-                
-                <div class="form-group" style="display: flex; gap: 20px;">
-                    <div style="flex: 1;">
-                        <label>Email</label>
-                        <input type="email" name="email" value="${patient.email}" class="form-control" required />
-                    </div>
-                    <div style="flex: 1;">
-                        <label>Phone Number</label>
-                        <input type="text" name="phone" value="${patient.phone}" class="form-control" required />
-                    </div>
+                    <label>Full Name <span class="required">*</span></label>
+                    <input type="text" name="fullName"
+                           value="<%= session.getAttribute("userName") %>"
+                           required>
                 </div>
 
-                <h3 style="margin-top: 30px; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">Medical Information</h3>
-                
-                <div class="form-group" style="display: flex; gap: 20px;">
-                    <div style="flex: 1;">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email"
+                           value="<%= patient != null ?
+                               patient.getEmail() : "" %>"
+                           disabled>
+                    <small style="color:#999;">
+                        Email cannot be changed
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label>Phone Number <span class="required">*</span></label>
+                    <input type="text" name="phone"
+                           value="<%= patient != null ?
+                               patient.getPhone() : "" %>"
+                           maxlength="10" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
                         <label>Date of Birth</label>
-                        <input type="date" name="dateOfBirth" value="${patient.dateOfBirth}" class="form-control" />
+                        <input type="date" name="dateOfBirth"
+                               value="<%= patient != null &&
+                                   patient.getDateOfBirth() != null ?
+                                   patient.getDateOfBirth() : "" %>">
                     </div>
-                    <div style="flex: 1;">
+                    <div class="form-group">
                         <label>Gender</label>
-                        <select name="gender" class="form-control">
-                            <option value="Male" ${patient.gender == 'Male' ? 'selected' : ''}>Male</option>
-                            <option value="Female" ${patient.gender == 'Female' ? 'selected' : ''}>Female</option>
-                            <option value="Other" ${patient.gender == 'Other' ? 'selected' : ''}>Other</option>
+                        <select name="gender">
+                            <option value="">Select</option>
+                            <option value="Male"
+                                    <%= patient != null &&
+                                            "Male".equals(patient.getGender()) ?
+                                            "selected" : "" %>>Male</option>
+                            <option value="Female"
+                                    <%= patient != null &&
+                                            "Female".equals(patient.getGender()) ?
+                                            "selected" : "" %>>Female</option>
+                            <option value="Other"
+                                    <%= patient != null &&
+                                            "Other".equals(patient.getGender()) ?
+                                            "selected" : "" %>>Other</option>
                         </select>
                     </div>
-                    <div style="flex: 1;">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
                         <label>Blood Group</label>
-                        <input type="text" name="bloodGroup" value="${patient.bloodGroup}" class="form-control" />
+                        <select name="bloodGroup">
+                            <option value="">Select</option>
+                            <% String[] groups =
+                                    {"A+","A-","B+","B-","O+","O-","AB+","AB-"};
+                                for (String g : groups) { %>
+                            <option value="<%= g %>"
+                                    <%= patient != null &&
+                                            g.equals(patient.getBloodGroup()) ?
+                                            "selected" : "" %>>
+                                <%= g %>
+                            </option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Emergency Contact</label>
+                        <input type="text" name="emergencyContact"
+                               value="<%= patient != null &&
+                                   patient.getEmergencyContact() != null ?
+                                   patient.getEmergencyContact() : "" %>">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>Address</label>
-                    <input type="text" name="address" value="${patient.address}" class="form-control" />
-                </div>
-                
-                <div class="form-group">
-                    <label>Emergency Contact</label>
-                    <input type="text" name="emergencyContact" value="${patient.emergencyContact}" class="form-control" />
+                    <textarea name="address" rows="2"><%=
+                    patient != null && patient.getAddress() != null ?
+                            patient.getAddress() : "" %></textarea>
                 </div>
 
-                <div style="margin-top: 30px;">
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Save Changes</button>
-                </div>
+                <button type="submit" class="btn btn-primary">
+                    Update Profile
+                </button>
             </form>
         </div>
-    </main>
 
-    <jsp:include page="/includes/footer.jsp" />
+        <!-- Change Password Form -->
+        <div class="form-card">
+            <h3 class="form-section-title">Change Password</h3>
+            <form action="${pageContext.request.contextPath}/patient/profile"
+                  method="post">
+                <input type="hidden" name="action" value="changePassword">
+
+                <div class="form-group">
+                    <label>Current Password <span class="required">*</span></label>
+                    <input type="password" name="currentPassword"
+                           placeholder="Enter current password" required>
+                </div>
+
+                <div class="form-group">
+                    <label>New Password <span class="required">*</span></label>
+                    <input type="password" name="newPassword"
+                           placeholder="Minimum 6 characters" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Confirm New Password <span class="required">*</span>
+                    </label>
+                    <input type="password" name="confirmPassword"
+                           placeholder="Repeat new password" required>
+                </div>
+
+                <button type="submit" class="btn btn-warning">
+                    Change Password
+                </button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<%@ include file="/includes/footer.jsp" %>
 
 </body>
 </html>
