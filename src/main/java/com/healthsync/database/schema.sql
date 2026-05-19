@@ -74,7 +74,7 @@ VALUES (
     'Admin',
     'admin@healthsync.com',
     '9825342534',
-    '1231',
+    '1234',
     'admin',
     'approved'
 );
@@ -95,4 +95,8 @@ VALUES ('Doctor',
         'doctor',
         'approved');
 
+INSERT IGNORE INTO patients (patient_id, user_id, date_of_birth, gender, address, blood_group, emergency_contact) 
+VALUES (1, 2, '2000-01-01', 'Other', 'Kathmandu', 'O+', '9800000000');
+
 INSERT IGNORE INTO doctors (doctor_id, user_id, specialization, qualification, experience_years, available_days) VALUES(7, 3, 'Bone Specialist', 'MBBS, MD', 12, '12');
+

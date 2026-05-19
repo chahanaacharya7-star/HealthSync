@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="com.healthsync.model.User" %>
 <!DOCTYPE html>
 <html>
@@ -31,22 +31,19 @@
     </div>
     <% } %>
 
-    <!-- Stats Cards -->
+    <!-- Quick Stats -->
     <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-icon">📅</div>
-            <h3>${totalAppointments}</h3>
-            <p>My Appointments</p>
+        <div class="stat-card" style="border-top-color: #3b82f6;">
+            <h3 style="color: #3b82f6;">${totalAppointments}</h3>
+            <p>Total Appointments</p>
         </div>
-        <div class="stat-card">
-            <div class="stat-icon">📋</div>
-            <h3>${totalRecords != null ? totalRecords : 0}</h3>
-            <p>Medical Records</p>
+        <div class="stat-card" style="border-top-color: #f59e0b;">
+            <h3 style="color: #f59e0b;">${pendingCount}</h3>
+            <p>Pending Requests</p>
         </div>
-        <div class="stat-card">
-            <div class="stat-icon">✅</div>
-            <h3>Active</h3>
-            <p>Account Status</p>
+        <div class="stat-card" style="border-top-color: #10b981;">
+            <h3 style="color: #10b981;">${confirmedCount}</h3>
+            <p>Confirmed Appointments</p>
         </div>
     </div>
 

@@ -84,9 +84,7 @@
                 </td>
                 <td>
                     <% if ("pending".equals(a.getStatus())) { %>
-                    <a href="${pageContext.request.contextPath}
-                                   /patient/my-appointments?action=cancel&id=
-                                   <%= a.getAppointmentId() %>"
+                    <a href="${pageContext.request.contextPath}/patient/my-appointments?action=cancel&id=<%= a.getAppointmentId() %>"
                        class="btn btn-danger btn-sm"
                        onclick="return confirm(
                                        'Cancel this appointment?')">

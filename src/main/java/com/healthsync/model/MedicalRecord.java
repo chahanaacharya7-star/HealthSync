@@ -13,6 +13,7 @@ public class MedicalRecord {
     // For display
     private String doctorName;
     private String doctorSpecialization;
+    private String patientName;
 
     public MedicalRecord() {}
 
@@ -48,7 +49,10 @@ public class MedicalRecord {
     public void setDoctorName(String doctorName) { this.doctorName = doctorName; }
 
     public String getDoctorSpecialization() { return doctorSpecialization; }
-    public void setDoctorSpecialization(String s) {
-        this.doctorSpecialization = s;
+    public void setDoctorSpecialization(String doctorSpecialization) {
+        this.doctorSpecialization = doctorSpecialization;
     }
+
+    public String getPatientName() { return patientName; }
+    public void setPatientName(String patientName) { this.patientName = patientName; }
 }
