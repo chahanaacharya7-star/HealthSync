@@ -126,8 +126,21 @@ public class PatientDashboardServlet extends HttpServlet {
             Patient patient = patientDAO.findByUserId(user.getUserId());
 
             if (patient == null) {
-                response.sendRedirect(request.getContextPath() + "/error.jsp");
-                return;
+                // Auto-create missing patient profile for seeded users
+                Patient newPatient = new Patient();
+                newPatient.setUserId(user.getUserId());
+                newPatient.setDateOfBirth("2000-01-01");
+                newPatient.setGender("Other");
+                newPatient.setAddress("Not provided");
+                newPatient.setBloodGroup("O+");
+                newPatient.setEmergencyContact("0000000000");
+                patientDAO.save(newPatient);
+
+                patient = patientDAO.findByUserId(user.getUserId());
+                if (patient == null) {
+                    response.sendRedirect(request.getContextPath() + "/error.jsp");
+                    return;
+                }
             }
 
             String path = request.getServletPath();
