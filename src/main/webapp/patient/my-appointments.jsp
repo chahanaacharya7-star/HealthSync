@@ -1,99 +1,112 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.healthsync.model.Appointment" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Appointments | HealthSync</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <title>My Appointments - HealthSync</title>
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
 
-    <jsp:include page="/includes/header.jsp" />
+<%@ include file="/includes/header.jsp" %>
 
-    <main class="dashboard-container">
-        <div class="dashboard-header">
-            <h1 class="dashboard-title">My Appointments</h1>
-            <p class="dashboard-subtitle">Manage and track all your scheduled consultations.</p>
+<div class="dashboard-container">
+    <div class="table-header">
+        <div>
+            <h2 class="dashboard-title">My Appointments</h2>
+            <p class="dashboard-subtitle">View and manage your appointments</p>
         </div>
+        <a href="${pageContext.request.contextPath}/patient/book-appointment"
+           class="btn btn-primary">+ Book New</a>
+    </div>
 
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Doctor</th>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Reason</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="app" items="${appointments}">
-                        <tr>
-                            <td>#${app.appointmentId}</td>
-                            <td>
-                                <div style="font-weight: 600;">Dr. ${app.doctorName}</div>
-                            </td>
-                            <td>${app.appointmentDate}</td>
-                            <td>${app.appointmentTime}</td>
-                            <td>${app.reason}</td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${app.status == 'pending'}">
-                                        <span class="badge badge-warning">Pending</span>
-                                    </c:when>
-                                    <c:when test="${app.status == 'confirmed'}">
-                                        <span class="badge badge-info">Confirmed</span>
-                                    </c:when>
-                                    <c:when test="${app.status == 'completed'}">
-                                        <span class="badge badge-success">Completed</span>
-                                    </c:when>
-                                    <c:when test="${app.status == 'cancelled'}">
-                                        <span class="badge badge-danger">Cancelled</span>
-                                    </c:when>
-                                </c:choose>
-                            </td>
-                            <td>
-                                <c:if test="${app.status == 'pending' || app.status == 'confirmed'}">
-                                    <button onclick="cancelAppointment(${app.appointmentId})" class="btn btn-danger btn-sm">Cancel</button>
-                                </c:if>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                    <c:if test="${empty appointments}">
-                        <tr>
-                            <td colspan="7" style="text-align: center; padding: 40px; color: #777;">
-                                No appointments found. <a href="${pageContext.request.contextPath}/patient/book-appointment" style="color: #1a73e8; font-weight: 600;">Book one now!</a>
-                            </td>
-                        </tr>
-                    </c:if>
-                </tbody>
-            </table>
-        </div>
-    </main>
+    <% if (request.getParameter("success") != null) { %>
+    <div class="alert alert-success">
+        ✔ <%= request.getParameter("success").replace("+", " ") %>
+    </div>
+    <% } %>
 
-    <jsp:include page="/includes/footer.jsp" />
-
-    <script>
-        function cancelAppointment(id) {
-            if (confirm('Are you sure you want to cancel this appointment?')) {
-                fetch('${pageContext.request.contextPath}/appointments/' + id + '/cancel', {
-                    method: 'PATCH'
-                })
-                .then(response => {
-                    if (response.ok) {
-                        location.reload();
-                    } else {
-                        alert('Failed to cancel appointment. Please try again.');
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Doctor</th>
+                <th>Specialization</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <%
+                List<Appointment> appointments =
+                        (List<Appointment>) request.getAttribute("appointments");
+                if (appointments == null || appointments.isEmpty()) {
+            %>
+            <tr>
+                <td colspan="8" style="text-align:center; padding:30px;">
+                    No appointments found.
+                    <a href="${pageContext.request.contextPath}
+                               /patient/book-appointment">
+                        Book one now
+                    </a>
+                </td>
+            </tr>
+            <%
+            } else {
+                int i = 1;
+                for (Appointment a : appointments) {
+            %>
+            <tr>
+                <td><%= i++ %></td>
+                <td>Dr. <%= a.getDoctorName() %></td>
+                <td><%= a.getDoctorSpecialization() %></td>
+                <td><%= a.getAppointmentDate() %></td>
+                <td><%= a.getAppointmentTime() %></td>
+                <td><%= a.getReason() != null ?
+                        a.getReason() : "-" %></td>
+                <td>
+                            <span class="badge
+                                <%= "pending".equals(a.getStatus()) ?
+                                    "badge-warning" :
+                                    "confirmed".equals(a.getStatus()) ?
+                                    "badge-success" :
+                                    "cancelled".equals(a.getStatus()) ?
+                                    "badge-danger" : "badge-info" %>">
+                                <%= a.getStatus() %>
+                            </span>
+                </td>
+                <td>
+                    <% if ("pending".equals(a.getStatus())) { %>
+                    <a href="${pageContext.request.contextPath}
+                                   /patient/my-appointments?action=cancel&id=
+                                   <%= a.getAppointmentId() %>"
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm(
+                                       'Cancel this appointment?')">
+                        Cancel
+                    </a>
+                    <% } else { %>
+                    <span style="color:#999;">—</span>
+                    <% } %>
+                </td>
+            </tr>
+            <%
                     }
-                });
-            }
-        }
-    </script>
+                }
+            %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%@ include file="/includes/footer.jsp" %>
 
 </body>
 </html>

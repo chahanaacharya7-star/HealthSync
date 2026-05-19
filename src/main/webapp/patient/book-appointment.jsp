@@ -1,96 +1,130 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.healthsync.model.Doctor" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Appointment | HealthSync</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <title>Book Appointment - HealthSync</title>
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
 
-    <jsp:include page="/includes/header.jsp" />
+<%@ include file="/includes/header.jsp" %>
 
-    <main class="auth-container" style="background-color: #f0f4f8;">
-        <div class="auth-box auth-box-wide">
-            <div class="auth-header">
-                <div class="auth-logo">📅</div>
-                <h2>Book an Appointment</h2>
-                <p>Choose a doctor and schedule your consultation.</p>
+<div class="dashboard-container">
+    <h2 class="dashboard-title">Book Appointment</h2>
+    <p class="dashboard-subtitle">
+        Schedule an appointment with one of our doctors
+    </p>
+
+    <% if (request.getAttribute("error") != null) { %>
+    <div class="alert alert-error">
+        ⚠ <%= request.getAttribute("error") %>
+    </div>
+    <% } %>
+
+    <div class="form-card">
+        <form action="${pageContext.request.contextPath}/patient/book-appointment"
+              method="post">
+
+            <div class="form-group">
+                <label>Select Doctor <span class="required">*</span></label>
+                <select name="doctorId" required onchange="loadDoctorInfo(this)">
+                    <option value="">-- Select a Doctor --</option>
+                    <%
+                        List<Doctor> doctors =
+                                (List<Doctor>) request.getAttribute("doctors");
+                        if (doctors != null) {
+                            for (Doctor d : doctors) {
+                    %>
+                    <option value="<%= d.getDoctorId() %>"
+                            data-spec="<%= d.getSpecialization() %>"
+                            data-days="<%= d.getAvailableDays() %>">
+                        Dr. <%= d.getFullName() %>
+                        — <%= d.getSpecialization() %>
+                    </option>
+                    <%
+                            }
+                        }
+                    %>
+                </select>
             </div>
 
-            <form id="bookingForm" action="${pageContext.request.contextPath}/appointments" method="POST">
-                <input type="hidden" name="patientId" value="${patient.patientId}">
-                
-                <div class="form-section">
-                    <div class="form-section-title">Consultation Details</div>
-                    
-                    <div class="form-group">
-                        <label for="doctorId">Select Doctor <span class="required">*</span></label>
-                        <select name="doctorId" id="doctorId" required>
-                            <option value="">-- Select a Doctor --</option>
-                            <c:forEach var="doctor" items="${doctors}">
-                                <option value="${doctor.doctorId}">Dr. ${doctor.fullName} (${doctor.specialization})</option>
-                            </c:forEach>
-                        </select>
-                    </div>
+            <!-- Doctor Info Box -->
+            <div id="doctorInfo" class="info-box" style="display:none;">
+                <p><strong>Specialization:</strong>
+                    <span id="docSpec"></span></p>
+                <p><strong>Available Days:</strong>
+                    <span id="docDays"></span></p>
+            </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="date">Appointment Date <span class="required">*</span></label>
-                            <input type="date" name="date" id="date" required min="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>">
-                        </div>
-                        <div class="form-group">
-                            <label for="time">Preferred Time <span class="required">*</span></label>
-                            <input type="time" name="time" id="time" required>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="reason">Reason for Visit <span class="required">*</span></label>
-                        <textarea name="reason" id="reason" rows="3" placeholder="Briefly describe your symptoms or reason for the visit..." required></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="notes">Additional Notes (Optional)</label>
-                        <textarea name="notes" id="notes" rows="2" placeholder="Any other information for the doctor..."></textarea>
-                    </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Appointment Date <span class="required">*</span></label>
+                    <input type="date"
+                           name="appointmentDate"
+                           min="<%= java.time.LocalDate.now().plusDays(1) %>"
+                           required>
                 </div>
-
-                <div style="margin-top: 30px; display: flex; gap: 15px;">
-                    <a href="${pageContext.request.contextPath}/patient/dashboard" class="btn btn-outline" style="flex: 1;">Cancel</a>
-                    <button type="submit" class="btn btn-primary" style="flex: 2;">Confirm Booking</button>
+                <div class="form-group">
+                    <label>Appointment Time <span class="required">*</span></label>
+                    <select name="appointmentTime" required>
+                        <option value="">-- Select Time --</option>
+                        <option value="09:00">09:00 AM</option>
+                        <option value="09:30">09:30 AM</option>
+                        <option value="10:00">10:00 AM</option>
+                        <option value="10:30">10:30 AM</option>
+                        <option value="11:00">11:00 AM</option>
+                        <option value="11:30">11:30 AM</option>
+                        <option value="14:00">02:00 PM</option>
+                        <option value="14:30">02:30 PM</option>
+                        <option value="15:00">03:00 PM</option>
+                        <option value="15:30">03:30 PM</option>
+                        <option value="16:00">04:00 PM</option>
+                        <option value="16:30">04:30 PM</option>
+                    </select>
                 </div>
-            </form>
-        </div>
-    </main>
+            </div>
 
-    <jsp:include page="/includes/footer.jsp" />
+            <div class="form-group">
+                <label>Reason for Visit</label>
+                <textarea name="reason"
+                          rows="3"
+                          placeholder="Describe your symptoms or reason for visit">
+                </textarea>
+            </div>
 
-    <script>
-        document.getElementById('bookingForm').onsubmit = function(e) {
-            e.preventDefault();
-            
-            const formData = new URLSearchParams(new FormData(this));
-            
-            fetch(this.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert('Appointment booked successfully!');
-                    window.location.href = '${pageContext.request.contextPath}/patient/my-appointments';
-                } else {
-                    alert('Failed to book appointment. Please check your details.');
-                }
-            });
-        };
-    </script>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    Confirm Booking
+                </button>
+                <a href="${pageContext.request.contextPath}/patient/dashboard"
+                   class="btn btn-outline">Cancel</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<%@ include file="/includes/footer.jsp" %>
+
+<script>
+    function loadDoctorInfo(select) {
+        var option = select.options[select.selectedIndex];
+        var spec  = option.getAttribute('data-spec');
+        var days  = option.getAttribute('data-days');
+        var box   = document.getElementById('doctorInfo');
+        if (spec) {
+            document.getElementById('docSpec').textContent = spec;
+            document.getElementById('docDays').textContent = days || 'Not specified';
+            box.style.display = 'block';
+        } else {
+            box.style.display = 'none';
+        }
+    }
+</script>
 
 </body>
 </html>
